@@ -21,7 +21,7 @@ contract TokenTest is Test{
     }
 
     function testOwnerBalance() public view{
-        uint256 balance = token.balanceOf(msg.sender);
+        uint256 balance = token.s_balances(msg.sender);
         // console.log(balance);
         assertEq(balance, token.totalSupply());
     }
@@ -29,7 +29,7 @@ contract TokenTest is Test{
     function testTransferShouldSucceed() public {
         vm.prank(msg.sender);
         token.transfer(lily, 10);
-        assertEq(token.balanceOf(lily), 10);
+        assertEq(token.s_balances(lily), 10);
     }
 
     function testApprove() public  {

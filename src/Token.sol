@@ -3,42 +3,24 @@ pragma solidity ^0.8.30;
 
 contract Token {
 
-    mapping(address => uint256) private s_balances;
+    string public name = "Lily";
+    string public symbol = "Ly";
+
+    //✨✨ We will start with 100 (a hundred) tokens✨✨
+    uint256 public totalSupply = 100 ether;
+    //✨✨ Since we specified 18 decimals, it will get "cut" after 100 ✨✨
+
+    uint256 public decimals = 18; //✨✨ We want to mimic ethereum which also uses 18 decimals. ✨✨
+    
+    mapping(address => uint256) public s_balances;
     mapping(address => mapping(address => uint256)) public _allowance;
 
     constructor(){
-        s_balances[msg.sender] = totalSupply();
+        s_balances[msg.sender] = totalSupply;
     }   
 
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Approval(address indexed owner, address indexed spender, uint256 value);
-
-    
-
-    function name() public pure returns (string memory){
-        return "Lily";
-    }
-    function symbol() public pure returns (string memory){
-        return "LY";
-    }
-    //✨✨ Same as "string public name = "ManualToken";"✨✨
-
-    function totalSupply() public pure returns (uint256){
-        //✨✨ We will start with 100 (a hundred) tokens✨✨
-        return 100 ether; //✨✨ This should be 100 * 10^18 (100 000000000000000000)✨✨
-        //✨✨ Since we specified 18 decimals, it will get "cut" after 100 ✨✨
-    }
-
-    function decimals() public pure returns (uint8){
-        //✨✨ We want to mimic ethereum which also uses 18 decimals. ✨✨
-        return 18;
-    }
-
-    function balanceOf (address _owner) public view returns (uint256) {
-        return s_balances[_owner];
-    }
-
-
 
 
     //✨✨ We need to make this reusable because it is going to be used both by "transfer()" and "transferFrom()"✨✨
@@ -51,7 +33,7 @@ contract Token {
     }
 
     function transfer(address to, uint256 value) public {
-        require(balanceOf(msg.sender) >= value, "Insufficient balance");
+        require(s_balances[msg.sender] >= value, "Insufficient balance");
         _transfer(msg.sender, to, value);
     }
 
@@ -70,7 +52,7 @@ contract Token {
     //✨✨ The transfer from function we subtract only in the _allowance mapping , while approve will subtract in s_balances.✨✨
 
     function transferFrom(address from, address to, uint256 value) public {
-        require(balanceOf(from) >= value, "Insufficient balance from owner");
+        require(s_balances[from] >= value, "Insufficient balance from owner");
         require(_allowance[from][msg.sender] >= value, "Not enough _allowance");
 
         _allowance[from][msg.sender] -= value;
