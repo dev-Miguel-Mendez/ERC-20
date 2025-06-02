@@ -28,7 +28,7 @@ contract Pair {
 
     }   
 
-    function getAmountOut(uint256 amountIn, address inputToken) public returns(uint256 amountOut){
+    function getAmountOut(uint256 amountIn, address inputToken) public returns(uint256){
         require(amountIn > 0, "Invalid input");
         // Suppose:
         // reserve0 = 100 (token0)
@@ -45,7 +45,7 @@ contract Pair {
         uint256 newAmountIn = reserveIn + amountIn;
         uint256 newAmountOut = k / newAmountIn;
 
-        amountOut = reserveOut -  newAmountOut;
+        uint256 amountOut = reserveOut -  newAmountOut;
 
 
         return amountOut;

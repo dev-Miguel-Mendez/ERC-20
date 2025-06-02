@@ -1,24 +1,5 @@
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -42,12 +23,12 @@ contract Pair {
     }
 
 
-   
 
     //⚠️⚠️ Even if you're not using a router, you still need to call approve() TO YOURSELF first, because of addLiquidity() is written.
     // It uses transferFrom() and you need to pass a  "from" to it even if msg.sender is you.⚠️⚠️
-    function addLiquidity(uint amount0, uint amount1) external {
-        //✨✨ Why not call approve() here? You CANNOT technically do it from  another (this) contract. You need to interact with the other contract directly bc of how approve() is written (it takes a msg.sender, not a "from").✨✨
+    function addLiquidity(uint amount0, uint amount1) external returns (bool) {
+        //✨✨ Why not call approve() here?
+        // You CANNOT technically do it from "another" (this) contract. You need to interact with the other contract directly bc of how approve() is written (it takes a msg.sender, not a "from").✨✨
         
         IERC20(token0).transferFrom(msg.sender, address(this), amount0); 
         IERC20(token1).transferFrom(msg.sender, address(this), amount1);  //✨✨ This supposes you already called "<ERC20>.approve(routerAddress, amount)"✨✨
@@ -55,9 +36,11 @@ contract Pair {
 
         reserve0 += amount0;
         reserve1 += amount1;
+
+        return true;
     }
 
-    function getAmountOut(uint amountIn, address inputToken) public view returns (uint amountOut) {
+    function getAmountOut(uint amountIn, address inputToken) public view returns (uint256) {
         require(amountIn > 0, "Invalid input");
 
         // Suppose:
@@ -83,10 +66,9 @@ contract Pair {
         uint newReserveOut = k / newReserveIn;
 
         // amountOut = reserveOut - newReserveOut = 100 - 90.909 ≈ 9.090
-        amountOut = reserveOut - newReserveOut;
+        uint256 amountOut = reserveOut - newReserveOut;
 
         return amountOut;
-
     }
 
 

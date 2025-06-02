@@ -20,26 +20,26 @@ contract TokenTest is Test{
         token = deployToken.run();
     }
 
-    function testOwnerBalance() public view{
+    function testOwnerBalance() external view{
         uint256 balance = token.balanceOf(msg.sender);
         // console.log(balance);
         assertEq(balance, token.totalSupply());
     }
 
-    function testTransferShouldSucceed() public {
+    function testTransferShouldSucceed() external {
         vm.prank(msg.sender);
         token.transfer(lily, 10);
         assertEq(token.balanceOf(lily), 10);
     }
 
-    function testApprove() public  {
+    function testApprove() external  {
         vm.prank(cyan);
         //✨✨ Cyan can approve with having tokens✨✨
         token.approve(lily, 5);
         assertEq(token.allowance(cyan, lily), 5);
     }
 
-    function testTransferFrom() public {
+    function testTransferFrom() external {
         //✨✨ Cyan can approve with having tokens✨✨
         vm.prank(cyan);
         token.approve(lily, 5);
