@@ -10,7 +10,7 @@ import {Token} from "../src/Token.sol";
 contract DeployToken is Script {
     function run() external returns(Token){
         vm.startBroadcast();
-        Token token = new Token();
+        Token token = new Token('Lily', 'LY', 1000000 ether, 18);
         vm.stopBroadcast();
         return token;
     }

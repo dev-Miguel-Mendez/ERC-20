@@ -7,7 +7,7 @@ interface IERC20 {          //✨✨ It doesn't matter if the original function 
 }
 
 
-contract MiniSwapPair { 
+contract Pair { 
     address public token0;
     address public token1;
 

@@ -3,20 +3,25 @@ pragma solidity ^0.8.30;
 
 contract Token {
 
-    string public name = "Lily";
-    string public symbol = "Ly";
+    string public name;
+    string public symbol;
 
     //✨✨ We will start with 100 (a hundred) tokens✨✨
-    uint256 public totalSupply = 1000000 ether;
+    uint256 public totalSupply; // LEAVE AS 1000000 ether for 1 Million tokens with 18 decs;
     //✨✨ Since we specified 18 decimals, it will get "cut" after 100 ✨✨
 
-    uint256 public decimals = 18; //✨✨ We want to mimic ethereum which also uses 18 decimals. ✨✨
+    uint256 public decimals; //✨✨ We want to mimic ethereum which also uses 18 decimals. ✨✨
     
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
 
-    constructor(){
+    constructor(string memory _name, string memory _symbol, uint256 _totalSupply, uint _decimals){
         balanceOf[msg.sender] = totalSupply;
+        name = _name;
+        symbol = _symbol;
+        totalSupply = _totalSupply;
+        decimals = _decimals;
+
     }   
 
     event Transfer(address indexed from, address indexed to, uint256 value);

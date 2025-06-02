@@ -29,7 +29,7 @@ interface IERC20 {
     function approve(address spender, uint amount) external returns (bool);
 }
 
-contract MiniSwapPair {
+contract Pair {
     address public token0;
     address public token1;
 
