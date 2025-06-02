@@ -19,59 +19,58 @@ contract WethTest is Test{
         DeployWeth deployToken = new DeployWeth();
         wethToken = deployToken.run();
         vm.deal(lily, 10 ether);
-    }
 
-
-    function testShouldDeposit() external {
+        //🟠🟠 Giving Lily initial 5 ETHER 🟠🟠
         vm.prank(lily);
         wethToken.deposit{value: 5 ether}();
 
-        uint256 balance = wethToken.balanceOf(lily);
+    }
+
+
+    //🟠🟠TESTS SPECIFIC TO WETH 🟠🟠
+    function testShouldDeposit() external {
+
+        uint balance = wethToken.balanceOf(lily);
         assertEq(balance, 5 ether);
     }
 
     function testShouldWithdraw() external {
-        vm.prank(lily);
-        wethToken.deposit{value: 5 ether}();
 
-        uint256 balanceAfterDeposit = wethToken.balanceOf(lily);
+        uint balanceAfterDeposit = wethToken.balanceOf(lily);
         assertEq(balanceAfterDeposit, 5 ether);
 
         
         vm.prank(lily);
         wethToken.withdraw(5 ether);
 
-        uint256 balanceAfterWithdraw = wethToken.balanceOf(lily);
+        uint balanceAfterWithdraw = wethToken.balanceOf(lily);
         assertEq(balanceAfterWithdraw, 0);
     }
 
+    
+    //🟠🟠TESTS THAT APPLY TO ALL ERC's 🟠🟠
+    function testTransferShouldSucceed() external {
+        vm.prank(lily);
+        wethToken.transfer(cyan, 5 ether);
+        assertEq(wethToken.balanceOf(cyan), 5 ether);
+    }
 
-    // function testTransferShouldSucceed() external {
-    //     vm.prank(msg.sender);
-    //     wethToken.transfer(lily, 10);
-    //     assertEq(wethToken.balanceOf(lily), 10);
-    // }
+    function testApprove() external  {
+        vm.prank(cyan);
+        //✨✨ Cyan can approve with having wethTokens✨✨
+        wethToken.approve(lily, 5 ether);
+        assertEq(wethToken.allowance(cyan, lily), 5 ether);
+    }
 
-    // function testApprove() external  {
-    //     vm.prank(cyan);
-    //     //✨✨ Cyan can approve with having wethTokens✨✨
-    //     wethToken.approve(lily, 5);
-    //     assertEq(wethToken.allowance(cyan, lily), 5);
-    // }
+    function testTransferFrom() external {
+        vm.prank(lily);
+        wethToken.approve(cyan, 5 ether);
 
-    // function testTransferFrom() external {
-    //     //✨✨ Cyan can approve with having wethTokens✨✨
-    //     vm.prank(cyan);
-    //     wethToken.approve(lily, 5);
 
-    //     //✨✨ However, he needs to have wethTokens for Lily to use "transferFrom()"✨✨
-    //     vm.prank(msg.sender);
-    //     wethToken.transfer(cyan, 5);
+        vm.prank(cyan);
+        wethToken.transferFrom(lily, cyan, 5 ether);
+        assertEq(wethToken.balanceOf(cyan), 5 ether);
 
-    //     vm.prank(lily);
-    //     wethToken.transferFrom(cyan, lily, 5);
-    //     assertEq(wethToken.balanceOf(lily), 5);
-
-    // }
+    }
 
 }

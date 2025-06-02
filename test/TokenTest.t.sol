@@ -21,7 +21,7 @@ contract TokenTest is Test{
     }
 
     function testOwnerBalance() external view{
-        uint256 balance = token.balanceOf(msg.sender);
+        uint balance = token.balanceOf(msg.sender);
         // console.log(balance);
         assertEq(balance, token.totalSupply());
     }
