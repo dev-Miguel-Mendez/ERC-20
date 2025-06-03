@@ -1,44 +1,31 @@
 
 
+//⚠️⚠️ In Uniswap V2, adding liquidity via the router involves two functions, depending on whether you're adding to a token-token pair or a token-ETH pair: ⚠️⚠️
 
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
+//⚠️⚠️ In Uniswap V2, adding liquidity via the router involves two functions, depending on whether you're adding to a token-token pair or a token-ETH pair: ⚠️⚠️
 
 
 
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
+//⚠️⚠️ In Uniswap V2, adding liquidity via the router involves two functions, depending on whether you're adding to a token-token pair or a token-ETH pair: ⚠️⚠️
 
 
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
-//⚠️⚠️ Don't focus on this for now, focus on the pair ⚠️⚠️
+
+//⚠️⚠️ In Uniswap V2, adding liquidity via the router involves two functions, depending on whether you're adding to a token-token pair or a token-ETH pair: ⚠️⚠️
+
+
+
+//⚠️⚠️ In Uniswap V2, adding liquidity via the router involves two functions, depending on whether you're adding to a token-token pair or a token-ETH pair: ⚠️⚠️
+
+
+
+//⚠️⚠️ In Uniswap V2, adding liquidity via the router involves two functions, depending on whether you're adding to a token-token pair or a token-ETH pair: ⚠️⚠️
+
+
+
+//⚠️⚠️ In Uniswap V2, adding liquidity via the router involves two functions, depending on whether you're adding to a token-token pair or a token-ETH pair: ⚠️⚠️
+
+
+
 
 
 
@@ -49,60 +36,43 @@
 pragma solidity ^0.8.20;
 
 interface IERC20 {
-    function transferFrom(address from, address to, uint value) external returns (bool);
-    function transfer(address to, uint value) external returns (bool);
-    function approve(address spender, uint value) external returns (bool);
+    function transferFrom(address from, address to, uint amount) external returns (bool);
+    function transfer(address to, uint amount) external returns (bool);
+    function approve(address spender, uint amount) external returns (bool);
+    function balanceOf(address account) external view returns (uint);
 }
 
 interface IWETH is IERC20 {
     function deposit() external payable;
-    function withdraw(uint value) external;
+    function withdraw(uint) external;
 }
 
-interface IUniswapPair {
-    function addLiquidity(uint amountToken, uint amountWETH, address to) external;
+interface IPair {
+    function mint(address provider) external returns (uint liquidity);
 }
 
-interface IUniswapFactory {
-    function getPair(address tokenA, address tokenB) external view returns (address);
-    function createPair(address tokenA, address tokenB) external returns (address);
-}
 
-contract MiniRouter {
+
+contract BasicRouter {
     address public immutable WETH;
-    address public immutable factory;
-
-    constructor(address _weth, address _factory) {
+    
+    constructor(address _weth) {
         WETH = _weth;
-        factory = _factory;
     }
+    
 
-    function addLiquidityETH(
-        address token,
-        uint amountTokenDesired,
-        address to
-    ) external payable {
-        require(msg.value > 0, "No ETH sent");
+    //✨✨ In Uniswap there are two functions to add a liquidity. This one of them and the other one takes 2 ERC20 tokens.✨✨
+    //✨✨ They both will use the same "mint()" function  in the pair contract.✨✨
+    function addLiquidityETH( address token, address pair, uint tokenAmount) external payable {
 
-        // Wrap ETH to WETH
+
+        //✨✨ This first needs permission.✨✨
+        IERC20(token).transferFrom(msg.sender, pair, tokenAmount);
+
         IWETH(WETH).deposit{value: msg.value}();
+        IWETH(WETH).transfer(pair, msg.value);
 
-        // Transfer tokens from user to this contract
-        IERC20(token).transferFrom(msg.sender, address(this), amountTokenDesired);
-
-        // Send token and WETH to the pair
-        address pair = IUniswapFactory(factory).getPair(token, WETH);
-        if (pair == address(0)) {
-            pair = IUniswapFactory(factory).createPair(token, WETH);
-        }
-
-        IERC20(token).transfer(pair, amountTokenDesired);
-        IERC20(WETH).transfer(pair, msg.value);
-
-        // Call custom addLiquidity in the pair (simplified)
-        IUniswapPair(pair).addLiquidity(amountTokenDesired, msg.value, to);
+        IPair(pair).mint(msg.sender);
     }
-
-    // Needed to receive ETH
-    receive() external payable {}
 }
+
