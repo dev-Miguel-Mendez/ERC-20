@@ -28,7 +28,10 @@ contract Pair {
 
     // It uses transferFrom() and you need to pass a  "from" to it even if msg.sender is you.⚠️⚠️
     function addLiquidity(uint amount0, uint amount1) external returns (bool) {
-
+                        //⚠️⚠️ WHY NOT USE THIS ⚠️⚠️
+        //⚠️⚠️ You couldn't make this work under certain conditions but it's not optimal ⚠️⚠️
+        // What if you want to add a liquidity with it WETH?
+        // You would need to make another "addLiquidity" function for token/token (like the  one bellow) 
         
         IERC20(token0).transferFrom(msg.sender, address(this), amount0); 
         IERC20(token1).transferFrom(msg.sender, address(this), amount1);  //✨✨ This supposes you already called "<ERC20>.approve(routerAddress, amount)"✨✨

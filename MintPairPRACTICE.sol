@@ -26,7 +26,7 @@ contract BasicPair {
     //     return (reserve0, reserve1);
     // }
 
-    // Called after user sends tokens to this contract
+    // We might prefer using a router to add the liquidity because if not we would need two different mint functions in this contract (one for WETH and one for token/token).
     function mint(address provider) external {
         uint balance0 = IERC20(token0).balanceOf(address(this)); 
         uint balance1 = IERC20(token1).balanceOf(address(this));

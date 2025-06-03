@@ -52,10 +52,8 @@ contract Pair {
 
         bool isToken0 = inputToken == token0; //✨✨ Set input/output reserves based on which token is being input✨✨
 
-
         (uint reserveIn, uint reserveOut) = isToken0 ? (reserve0, reserve1) : (reserve1, reserve0);
         //✨✨ When we talk about "reserve out", we're not talking about the amount that gets returned from this function, we just talk about "Token B" but we can't name it something like "token 0", makes sense??? 🤣✨✨
-
 
         // newReserveIn = reserveIn + amountIn = 100 + 10 = 110
         uint newReserveIn = reserveIn + amountIn;
@@ -77,7 +75,6 @@ contract Pair {
         bool isToken0 = inputToken == token0;
         address outputToken = isToken0 ? token1 : token0;
 
-        uint amountOut = getAmountOut(amountIn, inputToken);
 
         //🟠🟠 Provide your tokens 🟠🟠
         //✨✨ This requires prior balance and APPROVAL (normally handled by the Uniswap router but can be done manually)✨✨
@@ -92,6 +89,7 @@ contract Pair {
         //🟠🟠 Get your tokens 🟠🟠
         //✨✨ "transfer" is used instead of "transferFrom" because "transferFrom" needs permission.✨✨
         //✨✨ "transferFrom would require approval, which makes no sense when this contract is the sender"✨✨
+        uint amountOut = getAmountOut(amountIn, inputToken);
         IERC20(outputToken).transfer(msg.sender, amountOut); //✨✨ ALWAYS when you call this, it will be THIS contract giving you tokens. Below is why.✨✨
                       //✨✨ In the current contract scope✨✨
         //✨✨ msg.sender will be YOUR address as a user

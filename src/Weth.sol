@@ -18,6 +18,7 @@ contract WETH {
     event Approval(address indexed owner, address indexed spender, uint256 value);
     event Deposit(address indexed dst, uint amount);
     event Withdrawal(address indexed src, uint256 amount);
+
     function deposit() public payable {
         balanceOf[msg.sender] += msg.value;
         emit Deposit(msg.sender, msg.value);
@@ -63,7 +64,4 @@ contract WETH {
         return true;
     }
 }
-
-
-
 
