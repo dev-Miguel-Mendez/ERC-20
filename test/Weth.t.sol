@@ -4,7 +4,7 @@ pragma solidity ^0.8.30;
 
 
 import {Test, console} from "forge-std/Test.sol";
-import {DeployWeth} from "../script/DeployWeth.s.sol";
+import {DeployRouterWeth} from "../script/Deploy-Router-Weth.s.sol";
 import {WETH} from "../src/Weth.sol";
 
 
@@ -16,8 +16,8 @@ contract WethTest is Test{
     address cyan = makeAddr("Cyan");
         
     function setUp() external {
-        DeployWeth deployToken = new DeployWeth();
-        wethToken = deployToken.run();
+        DeployRouterWeth deployToken = new DeployRouterWeth();
+        (, wethToken) = deployToken.run();
         vm.deal(lily, 10 ether);
 
         //🟠🟠 Giving Lily initial 5 ETHER 🟠🟠

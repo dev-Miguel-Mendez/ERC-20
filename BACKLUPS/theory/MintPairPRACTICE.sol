@@ -40,13 +40,11 @@ contract BasicPair {
 
         require(added0 > 0 && added1 > 0, "Nothing added");
 
-        
-    
 
-        reserve0 = uint112(balance0); //This is just mimicking balance0 = IERC20(token0).balanceOf(address(this)); 
-                // We JUST CACHE THEM TO SAVE GAS
-        reserve1 = uint112(balance1); //This is just mimicking balance1 = IERC20(token1).balanceOf(address(this));
-            // We JUST CACHE THEM TO SAVE GAS
+        reserve0 = uint112(balance0); //This is just mimicking balance0 previous from IERC20(token0).balanceOf(address(this)); 
+                // It helps calculating "added0"
+        reserve1 = uint112(balance1); //This is just mimicking balance1 previous from IERC20(token1).balanceOf(address(this));
+                // It helps calculating "added1"
 
         //⚠️⚠️ Normally, here, a mint() function would be called. This whole pair is actually supposed to inherit from an ERC20. This whole pair would be an ERC20 because it needs to provide LP tokens. ⚠️⚠️
         // _mint(to, liquidity);

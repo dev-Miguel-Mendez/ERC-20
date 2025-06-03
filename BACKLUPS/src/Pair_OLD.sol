@@ -25,13 +25,17 @@ contract Pair {
 
 
 
-
+    //⚠️⚠️ Even if you're not using a router, you still need to call approve() TO YOURSELF first, because of addLiquidity() is written.
     // It uses transferFrom() and you need to pass a  "from" to it even if msg.sender is you.⚠️⚠️
     function addLiquidity(uint amount0, uint amount1) external returns (bool) {
-                        //⚠️⚠️ WHY NOT USE THIS ⚠️⚠️
+          //⚠️⚠️ WHY NOT USE THIS ⚠️⚠️
         //⚠️⚠️ You couldn't make this work under certain conditions but it's not optimal ⚠️⚠️
         // What if you want to add a liquidity with it WETH?
         // You would need to make another "addLiquidity" function for token/token (like the  one bellow) 
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //✨✨ Why not call approve() here?
+        // You CANNOT technically do it from "another" (this) contract. You need to interact with the other contract directly bc of how approve() is written (it takes a msg.sender, not a "from").✨✨
         
         IERC20(token0).transferFrom(msg.sender, address(this), amount0); 
         IERC20(token1).transferFrom(msg.sender, address(this), amount1);  //✨✨ This supposes you already called "<ERC20>.approve(routerAddress, amount)"✨✨
@@ -54,10 +58,8 @@ contract Pair {
 
         bool isToken0 = inputToken == token0; //✨✨ Set input/output reserves based on which token is being input✨✨
 
-
         (uint reserveIn, uint reserveOut) = isToken0 ? (reserve0, reserve1) : (reserve1, reserve0);
         //✨✨ When we talk about "reserve out", we're not talking about the amount that gets returned from this function, we just talk about "Token B" but we can't name it something like "token 0", makes sense??? 🤣✨✨
-
 
         // newReserveIn = reserveIn + amountIn = 100 + 10 = 110
         uint newReserveIn = reserveIn + amountIn;
@@ -79,7 +81,6 @@ contract Pair {
         bool isToken0 = inputToken == token0;
         address outputToken = isToken0 ? token1 : token0;
 
-        uint amountOut = getAmountOut(amountIn, inputToken);
 
         //🟠🟠 Provide your tokens 🟠🟠
         //✨✨ This requires prior balance and APPROVAL (normally handled by the Uniswap router but can be done manually)✨✨
@@ -94,6 +95,7 @@ contract Pair {
         //🟠🟠 Get your tokens 🟠🟠
         //✨✨ "transfer" is used instead of "transferFrom" because "transferFrom" needs permission.✨✨
         //✨✨ "transferFrom would require approval, which makes no sense when this contract is the sender"✨✨
+        uint amountOut = getAmountOut(amountIn, inputToken);
         IERC20(outputToken).transfer(msg.sender, amountOut); //✨✨ ALWAYS when you call this, it will be THIS contract giving you tokens. Below is why.✨✨
                       //✨✨ In the current contract scope✨✨
         //✨✨ msg.sender will be YOUR address as a user

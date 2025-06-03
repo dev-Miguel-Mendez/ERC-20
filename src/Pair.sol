@@ -18,28 +18,42 @@ contract Pair {
     uint public reserve0;
     uint public reserve1;
 
+    mapping(address => uint) public liquidity0Added;
+    mapping(address => uint) public liquidity1Added;
+
     constructor(address _token0, address _token1) {
         token0 = _token0;
         token1 = _token1;
     }
 
-
-
     //⚠️⚠️ Even if you're not using a router, you still need to call approve() TO YOURSELF first, because of addLiquidity() is written.
     // It uses transferFrom() and you need to pass a  "from" to it even if msg.sender is you.⚠️⚠️
-    function addLiquidity(uint amount0, uint amount1) external returns (bool) {
-        //✨✨ Why not call approve() here?
-        // You CANNOT technically do it from "another" (this) contract. You need to interact with the other contract directly bc of how approve() is written (it takes a msg.sender, not a "from").✨✨
-        
-        IERC20(token0).transferFrom(msg.sender, address(this), amount0); 
-        IERC20(token1).transferFrom(msg.sender, address(this), amount1);  //✨✨ This supposes you already called "<ERC20>.approve(routerAddress, amount)"✨✨
-        //✨✨ If you will use ETH (WETH) as tokenX, there is no need to approve, you just give it to UniSwap ✨✨
+    function mint(address provider) external returns (bool) {
+        uint balance0 = IERC20(token0).balanceOf(address(this));
+        uint balance1 = IERC20(token1).balanceOf(address(this));
 
-        reserve0 += amount0;
-        reserve1 += amount1;
+        uint added0 = balance0 - reserve0;
+        uint added1 = balance1 - reserve1;
+
+        require(added0 > 0 && added1 > 0, "Nothing added");
+
+        reserve0 = uint112(balance0); //This is just mimicking balance0 previous from IERC20(token0).balanceOf(address(this)); 
+                // It helps calculating "added0"
+        reserve1 = uint112(balance1); //This is just mimicking balance1 previous from IERC20(token1).balanceOf(address(this));
+                // It helps calculating "added1"
+
+
+        //⚠️⚠️ Normally, here, a mint() function would be called. This whole pair is actually supposed to inherit from an ERC20. This whole pair would be an ERC20 because it needs to provide LP tokens. ⚠️⚠️
+        // _mint(to, liquidity);
+        //⚠️⚠️ This _mint function is the one that would be inherited and that would refer to the LP tokens of this pair. ⚠️⚠️
+        //However, to keep track for now:
+        liquidity0Added[provider] = added0;
+        liquidity1Added[provider] = added1;
 
         return true;
     }
+
+    
 
     function getAmountOut(uint amountIn, address inputToken) public view returns (uint256) {
         require(amountIn > 0, "Invalid input");
@@ -52,8 +66,10 @@ contract Pair {
 
         bool isToken0 = inputToken == token0; //✨✨ Set input/output reserves based on which token is being input✨✨
 
+
         (uint reserveIn, uint reserveOut) = isToken0 ? (reserve0, reserve1) : (reserve1, reserve0);
         //✨✨ When we talk about "reserve out", we're not talking about the amount that gets returned from this function, we just talk about "Token B" but we can't name it something like "token 0", makes sense??? 🤣✨✨
+
 
         // newReserveIn = reserveIn + amountIn = 100 + 10 = 110
         uint newReserveIn = reserveIn + amountIn;
@@ -75,6 +91,7 @@ contract Pair {
         bool isToken0 = inputToken == token0;
         address outputToken = isToken0 ? token1 : token0;
 
+        uint amountOut = getAmountOut(amountIn, inputToken);
 
         //🟠🟠 Provide your tokens 🟠🟠
         //✨✨ This requires prior balance and APPROVAL (normally handled by the Uniswap router but can be done manually)✨✨
@@ -89,7 +106,6 @@ contract Pair {
         //🟠🟠 Get your tokens 🟠🟠
         //✨✨ "transfer" is used instead of "transferFrom" because "transferFrom" needs permission.✨✨
         //✨✨ "transferFrom would require approval, which makes no sense when this contract is the sender"✨✨
-        uint amountOut = getAmountOut(amountIn, inputToken);
         IERC20(outputToken).transfer(msg.sender, amountOut); //✨✨ ALWAYS when you call this, it will be THIS contract giving you tokens. Below is why.✨✨
                       //✨✨ In the current contract scope✨✨
         //✨✨ msg.sender will be YOUR address as a user
