@@ -24,7 +24,7 @@ contract TokenTest is Test{
         token = new Token('Lily', 'LY', 1000000 ether, 18, msg.sender);
     }
 
-    function testOwnerBalance() external view{
+    function testCreatorBalance() external view{
         uint balance = token.balanceOf(msg.sender);
         // console.log(balance);
         assertEq(balance, token.totalSupply());

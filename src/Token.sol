@@ -11,18 +11,18 @@ contract Token {
 
     uint public decimals; //✨✨ We want to mimic ethereum which also uses 18 decimals. ✨✨
     
-    address owner;
+    address creator;
 
     mapping(address => uint) public balanceOf;
     mapping(address => mapping(address => uint)) public allowance;
 
-    constructor(string memory _name, string memory _symbol, uint _totalSupply, uint _decimals, address _owner){
+    constructor(string memory _name, string memory _symbol, uint _totalSupply, uint _decimals, address _creator){
         name = _name;
         symbol = _symbol;
         // totalSupply = _totalSupply; //✨✨ We call this in _mint()✨✨
         decimals = _decimals;
-        owner = _owner; //⚠️⚠️ We need to pass the "owner" here because this can be call from a factory ⚠️⚠️
-        _mint(_owner, _totalSupply);
+        creator = _creator; //⚠️⚠️ We need to pass the "creator" here because this can be call from a factory ⚠️⚠️
+        _mint(_creator, _totalSupply);
     }   
 
     event Transfer(address indexed from, address indexed to, uint value);
@@ -69,7 +69,7 @@ contract Token {
     }
 
     function mint(address to, uint amount) public{
-        require(msg.sender == owner, "Only the owner can call this function");
+        require(msg.sender == creator, "Only the creator can call this function");
         _mint(to, amount);
     }
     
