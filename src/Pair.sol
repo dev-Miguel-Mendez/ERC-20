@@ -8,6 +8,7 @@ interface IERC20 {
     function transfer(address to, uint amount) external returns (bool);
     function balanceOf(address owner) external view returns (uint);
     function approve(address spender, uint amount) external returns (bool);
+    function mint(address to, uint amount) external;
 }
 
 contract Pair {

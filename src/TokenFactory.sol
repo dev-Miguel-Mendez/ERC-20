@@ -8,16 +8,16 @@ contract TokenFactory {
 
     event TokenCreated(address indexed token, string name, string symbol, uint supply, address creator);
 
-    function createToken(string memory name, string memory symbol, uint totalSupply, uint decimals) public returns(address){
-        Token token = new Token(name, symbol, totalSupply, decimals);
+    function createToken(string memory name, string memory symbol, uint totalSupply, uint decimals, address creator) public returns(address){
+        Token token = new Token(name, symbol, totalSupply, decimals, creator);
         allTokens.push(address(token));
 
-        emit TokenCreated(address(token), name, symbol, totalSupply, msg.sender);
+        emit TokenCreated(address(token), name, symbol, totalSupply, creator);
 
         return address(token);
     }
 
-    
+
     
 
 }

@@ -11,15 +11,18 @@ contract Token {
 
     uint public decimals; //✨✨ We want to mimic ethereum which also uses 18 decimals. ✨✨
     
+    address owner;
+
     mapping(address => uint) public balanceOf;
     mapping(address => mapping(address => uint)) public allowance;
 
-    constructor(string memory _name, string memory _symbol, uint _totalSupply, uint _decimals){
+    constructor(string memory _name, string memory _symbol, uint _totalSupply, uint _decimals, address _owner){
         name = _name;
         symbol = _symbol;
-        totalSupply = _totalSupply;
+        // totalSupply = _totalSupply; //✨✨ We call this in _mint()✨✨
         decimals = _decimals;
-        balanceOf[msg.sender] = totalSupply;
+        owner = _owner; //⚠️⚠️ We need to pass the "owner" here because this can be call from a factory ⚠️⚠️
+        _mint(_owner, _totalSupply);
     }   
 
     event Transfer(address indexed from, address indexed to, uint value);
@@ -64,6 +67,25 @@ contract Token {
 
         return true;
     }
+
+    function mint(address to, uint amount) public{
+        require(msg.sender == owner, "Only the owner can call this function");
+        _mint(to, amount);
+    }
+    
+    //🟠🟠 Why is there "_mint" and "mint"? 🟠🟠
+    //The difference is that "_mint" is an internal function, while "mint" is a public function.
+    // _mint assumes you know what you're doing, so it skips checks like authorization or validation, use it in the constructor, tests or other internal code.
+        
+    function _mint(address to, uint amount) internal { //✨✨ This doesn't check if the sender is the owner because we only call it from the constructor or in the mint function.✨✨
+        require(to != address(0), "Cannot mint to zero address");
+        totalSupply += amount;
+        balanceOf[to] = amount;
+        emit Transfer(address(0), to, amount);
+
+    }   
+
+
 }
 
 

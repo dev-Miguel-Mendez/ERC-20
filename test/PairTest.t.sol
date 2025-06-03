@@ -18,9 +18,15 @@ contract PairTest is Test{
     address cyan = makeAddr("cyan");
 
     function setUp() external {
-        DeployPair deployPair = new DeployPair();
-        (pair, token0, token1) = deployPair.run();
+        //⚠️⚠️ Using the script was giving me issues because it was minting the tokens to the script address. ⚠️⚠️
+        // DeployPair deployPair = new DeployPair();
+        // (pair, token0, token1) = deployPair.run();
 
+        token0 = new Token('Lily', 'LY', 1000000 ether, 18, msg.sender);
+        token1 = new Token('LilEth', 'LE', 1000000 ether, 18, msg.sender);
+        pair = new Pair(address(token0), address(token1));
+
+        
         //🟠🟠 Approving 🟠🟠
         vm.prank(msg.sender); //The owner is the one who holds the tokens
         token0.approve(address(pair), amountLiquidity0);
@@ -30,6 +36,8 @@ contract PairTest is Test{
     }
 
     modifier addLiquidity {
+        console.log(msg.sender);
+
         vm.prank(msg.sender); //Assumes that this wallet also deployed the 2 tokens.
         pair.addLiquidity(amountLiquidity0, amountLiquidity1);
         _;

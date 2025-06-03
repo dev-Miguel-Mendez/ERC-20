@@ -11,8 +11,8 @@ contract DeployPair is Script{
     function run() external returns(Pair, Token, Token) {
         
         vm.startBroadcast();
-        Token token0 = new Token('Lily', 'LY', 1000000 ether, 18);
-        Token token1 = new Token('LilEth', 'LE', 1000000 ether, 18);
+        Token token0 = new Token('Lily', 'LY', 1000000 ether, 18, msg.sender);
+        Token token1 = new Token('LilEth', 'LE', 1000000 ether, 18, msg.sender);
 
         Pair pair = new Pair(address(token0), address(token1));
 
