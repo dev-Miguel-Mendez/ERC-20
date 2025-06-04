@@ -19,10 +19,10 @@ interface IPair {
 
 
 contract Router {
-    address public immutable WETH_ADRESS;
+    address public immutable WETH_ADDRESS;
 
     constructor(address _weth){
-        WETH_ADRESS = _weth;
+        WETH_ADDRESS = _weth;
     }
 
 
@@ -32,8 +32,8 @@ contract Router {
         //✨✨ This first needs permission.✨✨
         IERC20(token).transferFrom(msg.sender, pair, tokenAmount); //✨✨This will be the reserve0✨✨
 
-        IWETH(WETH_ADRESS).deposit{value: msg.value}();
-        IWETH(WETH_ADRESS).transfer(pair, tokenAmount);
+        IWETH(WETH_ADDRESS).deposit{value: msg.value}();
+        IWETH(WETH_ADDRESS).transfer(pair, tokenAmount);
 
 
         IPair(pair).mint(msg.sender);
