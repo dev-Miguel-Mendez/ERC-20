@@ -30,8 +30,12 @@ case $1 in
         forge script script/Deploy-Router-Weth.s.sol --rpc-url http://localhost:8545 --broadcast --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 
     ;;
 
-    factory-anvil)
+    token-factory-anvil)
         forge script script/Deploy-TokenFactory.sol --rpc-url http://localhost:8545 --broadcast --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+    ;;
+
+    pair-factory-anvil)
+        forge script script/Deploy-PairFactory.sol --rpc-url http://localhost:8545 --broadcast --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
     ;;
 
 

@@ -69,19 +69,14 @@ contract Pair {
 
         (uint reserveIn, uint reserveOut) = isToken0 ? (reserve0, reserve1) : (reserve1, reserve0);
         //✨✨ When we talk about "reserve out", we're not talking about the amount that gets returned from this function, we just talk about "Token B" but we can't name it something like "token 0", makes sense??? 🤣✨✨
-
-
-        // newReserveIn = reserveIn + amountIn = 100 + 10 = 110
-        uint newReserveIn = reserveIn + amountIn;
-
-        // k = reserveIn * reserveOut = 100 * 100 = 10,000
-        uint k = reserveIn * reserveOut;
-
-        // newReserveOut = k / newReserveIn = 10,000 / 110 ≈ 90.909
-        uint newReserveOut = k / newReserveIn;
-
-        // amountOut = reserveOut - newReserveOut = 100 - 90.909 ≈ 9.090
-        uint256 amountOut = reserveOut - newReserveOut;
+        
+        uint newReserveIn = reserveIn + amountIn; // newReserveIn = reserveIn + amountIn = 100 + 10 = 110
+        
+        uint k = reserveIn * reserveOut; // k = reserveIn * reserveOut = 100 * 100 = 10,000
+        
+        uint newReserveOut = k / newReserveIn; // newReserveOut = k / newReserveIn = 10,000 / 110 ≈ 90.909
+        
+        uint256 amountOut = reserveOut - newReserveOut; // amountOut = reserveOut - newReserveOut = 100 - 90.909 ≈ 9.090
 
         return amountOut;
     }
