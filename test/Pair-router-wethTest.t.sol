@@ -16,7 +16,7 @@ contract PairTest is Test{
     WETH wethToken;
 
     uint amountLiquidity0 = 100 ether; 
-    uint amountLiquidity1 = 100 ether; 
+    uint amountLiquidity1 = 1000 ether; 
 
     address cyan = makeAddr("cyan");
 
@@ -67,14 +67,11 @@ contract PairTest is Test{
                             //⚠️⚠️ Adding liquidity ⚠️⚠️
     function testShouldSwapAndGetEth() external addLiquidity{
         uint256 testInputAmount = 10 ether;
-        uint256 amountOut = pair.getAmountOut(testInputAmount, address(wethToken));
-
-        console.log(token0.balanceOf(cyan));
+        uint256 amountOut = pair.getAmountOut(testInputAmount, address(token0));
 
         vm.prank(msg.sender);
         token0.transfer(cyan, testInputAmount);
 
-        console.log(token0.balanceOf(cyan));
         vm.prank(cyan);
         token0.approve(address(pair), testInputAmount); //🟠🟠 This would occur  outside the pair contract (usually using the router or manually) 🟠🟠
 
@@ -82,15 +79,10 @@ contract PairTest is Test{
         pair.swap(testInputAmount, address(token0));
 
         uint256 pairNewBalancetoken0 = token0.balanceOf(address(pair));
-        assertEq(pairNewBalancetoken0, (testInputAmount + amountLiquidity1));
-
-
+        assertEq(pairNewBalancetoken0, (testInputAmount + amountLiquidity0));
 
         uint256 pairNewBalanceWETH = wethToken.balanceOf(address(pair));
-        assertEq(pairNewBalanceWETH, (amountLiquidity0 - amountOut));
-
-
+        assertEq(pairNewBalanceWETH, (amountLiquidity1 - amountOut));
     }
-
 }
 

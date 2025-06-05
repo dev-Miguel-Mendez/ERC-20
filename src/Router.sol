@@ -30,15 +30,12 @@ contract Router {
     //✨✨ They both will use the same "mint()" function  in the pair contract.✨✨
     function addLiquidityEth(address token, address pair, uint tokenAmount) external payable  {
         //✨✨ This first needs permission.✨✨
-        IERC20(token).transferFrom(msg.sender, pair, tokenAmount); //✨✨This will be the reserve0✨✨
-
+        bool success = IERC20(token).transferFrom(msg.sender, pair, tokenAmount); //✨✨This will be the reserve0✨✨
+        require(success, "transferFrom failed");
         IWETH(WETH_ADDRESS).deposit{value: msg.value}();
-        IWETH(WETH_ADDRESS).transfer(pair, tokenAmount);
+        IWETH(WETH_ADDRESS).transfer(pair, msg.value);
 
 
         IPair(pair).mint(msg.sender);
     }
-
-
-
 }

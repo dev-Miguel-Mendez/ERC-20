@@ -41,7 +41,7 @@ contract WETH {
     }
 
     function transfer(address to, uint256 value) public returns(bool){
-        require(balanceOf[msg.sender] >= value, "Insufficient balance");
+        require(balanceOf[msg.sender] >= value, "Insufficient WETH balance");
         _transfer(msg.sender, to, value);
         return true;
     }
@@ -55,8 +55,8 @@ contract WETH {
     }
 
     function transferFrom(address from, address to, uint256 value) public returns(bool){
-        require(balanceOf[from] >= value, "Insufficient balance from owner");
-        require(allowance[from][msg.sender] >= value, "Not enough allowance");
+        require(balanceOf[from] >= value, "Insufficient WETH balance from owner");
+        require(allowance[from][msg.sender] >= value, "Not enough WETH allowance");
 
         allowance[from][msg.sender] -= value;
         _transfer(from, to, value);
