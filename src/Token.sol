@@ -12,6 +12,7 @@ contract Token {
     uint public decimals; //✨✨ We want to mimic ethereum which also uses 18 decimals. ✨✨
     
     address creator;
+    
 
     mapping(address => uint) public balanceOf;
     mapping(address => mapping(address => uint)) public allowance;

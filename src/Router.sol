@@ -18,12 +18,15 @@ interface IPair {
 }
 
 
+
 contract Router {
     address public immutable WETH_ADDRESS;
 
     constructor(address _weth){
         WETH_ADDRESS = _weth;
     }
+
+    event AddLiquidityEth(address token, address pair, uint tokenAmount);
 
 
     //✨✨ In Uniswap there are two functions to add a liquidity. This one of them and the other one takes 2 ERC20 tokens.✨✨
@@ -37,5 +40,7 @@ contract Router {
 
 
         IPair(pair).mint(msg.sender);
+
+        emit AddLiquidityEth(token, pair, tokenAmount);
     }
 }
