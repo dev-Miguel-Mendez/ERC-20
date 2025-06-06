@@ -26,7 +26,7 @@ contract Router {
         WETH_ADDRESS = _weth;
     }
 
-    event AddLiquidityEth(address token, address pair, uint tokenAmount);
+    event AddLiquidityEth(uint indexed tokenAmount, uint indexed ethAmount, address token, address pair);
 
 
     //✨✨ In Uniswap there are two functions to add a liquidity. This one of them and the other one takes 2 ERC20 tokens.✨✨
@@ -41,6 +41,6 @@ contract Router {
 
         IPair(pair).mint(msg.sender);
 
-        emit AddLiquidityEth(token, pair, tokenAmount);
+        emit AddLiquidityEth(tokenAmount, msg.value, token, pair );
     }
 }
