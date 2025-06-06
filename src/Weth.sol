@@ -31,6 +31,10 @@ contract WETH {
         emit Withdrawal(msg.sender, amount);
     }
 
+    function totalSupply() public view returns (uint256) {
+        return address(this).balance;
+    }
+
 
     function _transfer(address _from, address to, uint256 value) internal returns(bool){ 
         require(to != address(0), "ERC20: transfer to the zero address");

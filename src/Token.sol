@@ -48,6 +48,18 @@ contract Token {
 
     //✨✨ This function needs to be called by one party (sender)  before the approved party (spender) can call "transferFrom()"✨✨
     function approve(address spender, uint value) public returns (bool) {
+        //⚠️⚠️ NEED TO DO += ⚠️⚠️
+        //⚠️⚠️ NEED TO DO += ⚠️⚠️
+        //⚠️⚠️ NEED TO DO += ⚠️⚠️
+        //⚠️⚠️ NEED TO DO += ⚠️⚠️
+        //⚠️⚠️ NEED TO DO += ⚠️⚠️
+        //⚠️⚠️ NEED TO DO += ⚠️⚠️
+        //⚠️⚠️ NEED TO DO += ⚠️⚠️
+        //⚠️⚠️ NEED TO DO += ⚠️⚠️
+        //⚠️⚠️ NEED TO DO += ⚠️⚠️
+        //⚠️⚠️ NEED TO DO += ⚠️⚠️
+        //⚠️⚠️ NEED TO DO += ⚠️⚠️
+        //⚠️⚠️ NEED TO DO += ⚠️⚠️
         allowance[msg.sender][spender] = value;
         emit Approval(msg.sender, spender, value);
 

@@ -31,6 +31,8 @@ contract Pair {
 
     event Swap( address indexed sender, address indexed inputToken, address indexed outputToken, uint amountIn, uint amountOut, uint reserveIn, uint reserveOut);
 
+    error TokenMissing(address  token); //✨✨ Custom errors save a lot of gas compared to strings✨✨
+
     //⚠️⚠️ Even if you're not using a router, you still need to call approve() TO YOURSELF first, because of addLiquidity() is written.
     // It uses transferFrom() and you need to pass a  "from" to it even if msg.sender is you.⚠️⚠️
     function mint(address provider) external returns (bool) {
@@ -40,7 +42,12 @@ contract Pair {
         uint added0 = balance0 - reserve0;
         uint added1 = balance1 - reserve1;
 
-        require(added0 > 0 && added1 > 0, "Nothing added");
+        if (added0 == 0){
+            revert TokenMissing(token0);
+        }
+        if (added1 == 0){
+            revert TokenMissing(token1);
+        }
 
         reserve0 = uint112(balance0); //This is just mimicking balance0 previous from IERC20(token0).balanceOf(address(this));
         // It helps calculating "added0"
