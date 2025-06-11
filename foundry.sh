@@ -6,24 +6,20 @@ case $1 in
 
 
     token-sepolia)
-        forge script script/DeployToken.s.sol --rpc-url https://sepolia.infura.io/v3/e1e793f407ec4e19a57e10ab4048a303 --keystore ~/.foundry/keystores/sepoliaPK --sender 0x134b5D2Ea08aF086b90044cA8D6bFDC083B7B36e --broadcast --verify --etherscan-api-key 2JMKPHMTAUUTQAVK8SYVJWRVNPK2PXMV1E 
+        forge script script/DeployToken.s.sol --rpc-url YOUR-HTTP-PROVIDER-WITH-KEY --keystore ~/.foundry/keystores/sepoliaPK --sender YOUR-SEPOLIA-WALLET-ADDRESS --broadcast --verify --etherscan-api-key YOUR-ETHERSCAN-API-KEY-HERE 
     ;;
 
 
     router-weth-sepolia)
-        forge script script/Deploy-Router-Weth.s.sol --rpc-url https://sepolia.infura.io/v3/e1e793f407ec4e19a57e10ab4048a303 --keystore ~/.foundry/keystores/sepoliaPK --sender 0x134b5D2Ea08aF086b90044cA8D6bFDC083B7B36e --broadcast --verify --etherscan-api-key 2JMKPHMTAUUTQAVK8SYVJWRVNPK2PXMV1E 
+        forge script script/Deploy-Router-Weth.s.sol --rpc-url YOUR-HTTP-PROVIDER-WITH-KEY --keystore ~/.foundry/keystores/sepoliaPK --sender YOUR-SEPOLIA-WALLET-ADDRESS --broadcast --verify --etherscan-api-key YOUR-ETHERSCAN-API-KEY-HERE 
     ;;
     token-factory-sepolia)
-        forge script script/Deploy-TokenFactory.sol --rpc-url https://sepolia.infura.io/v3/e1e793f407ec4e19a57e10ab4048a303 --keystore ~/.foundry/keystores/sepoliaPK --sender 0x134b5D2Ea08aF086b90044cA8D6bFDC083B7B36e --broadcast --verify --etherscan-api-key 2JMKPHMTAUUTQAVK8SYVJWRVNPK2PXMV1E 
+        forge script script/Deploy-TokenFactory.sol --rpc-url YOUR-HTTP-PROVIDER-WITH-KEY --keystore ~/.foundry/keystores/sepoliaPK --sender YOUR-SEPOLIA-WALLET-ADDRESS --broadcast --verify --etherscan-api-key YOUR-ETHERSCAN-API-KEY-HERE 
     ;;
 
     pair-factory-sepolia)
-        forge script script/Deploy-PairFactory.sol --rpc-url https://sepolia.infura.io/v3/e1e793f407ec4e19a57e10ab4048a303 --keystore ~/.foundry/keystores/sepoliaPK --sender 0x134b5D2Ea08aF086b90044cA8D6bFDC083B7B36e --broadcast --verify --etherscan-api-key 2JMKPHMTAUUTQAVK8SYVJWRVNPK2PXMV1E
+        forge script script/Deploy-PairFactory.sol --rpc-url YOUR-HTTP-PROVIDER-WITH-KEY --keystore ~/.foundry/keystores/sepoliaPK --sender YOUR-SEPOLIA-WALLET-ADDRESS --broadcast --verify --etherscan-api-key YOUR-ETHERSCAN-API-KEY-HERE
     ;;
-
-    # deploy-all-sepolia)
-    #     forge script script/production-scripts/DeployAll.s.sol --rpc-url https://sepolia.infura.io/v3/e1e793f407ec4e19a57e10ab4048a303 --keystore ~/.foundry/keystores/sepoliaPK --sender 0x134b5D2Ea08aF086b90044cA8D6bFDC083B7B36e --broadcast --verify --etherscan-api-key 2JMKPHMTAUUTQAVK8SYVJWRVNPK2PXMV1E 
-    # ;;
 
 
         #* ANVIL

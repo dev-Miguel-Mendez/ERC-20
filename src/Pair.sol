@@ -29,9 +29,10 @@ contract Pair {
         token1 = _token1;
     }
 
+    //prettier-ignore
     event Swap( address indexed sender, address indexed inputToken, address indexed outputToken, uint amountIn, uint amountOut, uint reserveIn, uint reserveOut);
 
-    error TokenMissing(address  token); //✨✨ Custom errors save a lot of gas compared to strings✨✨
+    error TokenMissing(address token); //✨✨ Custom errors save a lot of gas compared to strings✨✨
 
     //⚠️⚠️ Even if you're not using a router, you still need to call approve() TO YOURSELF first, because of addLiquidity() is written.
     // It uses transferFrom() and you need to pass a  "from" to it even if msg.sender is you.⚠️⚠️
@@ -42,10 +43,10 @@ contract Pair {
         uint added0 = balance0 - reserve0;
         uint added1 = balance1 - reserve1;
 
-        if (added0 == 0){
+        if (added0 == 0) {
             revert TokenMissing(token0);
         }
-        if (added1 == 0){
+        if (added1 == 0) {
             revert TokenMissing(token1);
         }
 
@@ -64,10 +65,8 @@ contract Pair {
         return true;
     }
 
-    function getAmountOut(
-        uint amountIn,
-        address inputToken
-    ) public view returns (uint) {
+    //prettier-ignore
+    function getAmountOut(uint amountIn, address inputToken) public view returns (uint) {
         require(amountIn > 0, "Invalid input");
 
         // Suppose:
@@ -78,9 +77,7 @@ contract Pair {
 
         bool isToken0 = inputToken == token0; //✨✨ Set input/output reserves based on which token is being input✨✨
 
-        (uint reserveIn, uint reserveOut) = isToken0
-            ? (reserve0, reserve1)
-            : (reserve1, reserve0);
+        (uint reserveIn, uint reserveOut) = isToken0 ? (reserve0, reserve1) : (reserve1, reserve0);
         //✨✨ When we talk about "reserve out", we're not talking about the amount that gets returned from this function, we just talk about "Token B" but we can't name it something like "token 0", makes sense??? 🤣✨✨
 
         uint newReserveIn = reserveIn + amountIn; // newReserveIn = reserveIn + amountIn = 100 + 10 = 110
@@ -125,12 +122,8 @@ contract Pair {
             reserve1 += amountIn;
             reserve0 -= amountOut;
         }
-        emit Swap(
-            msg.sender,
-            inputToken,
-            outputToken,
-            amountIn,
-            amountOut,
+        //prettier-ignore
+        emit Swap( msg.sender, inputToken, outputToken, amountIn,amountOut,
             isInputToken0 ? reserve0 : reserve1,
             isInputToken0 ? reserve1 : reserve0
         );
