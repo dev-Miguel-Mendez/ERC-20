@@ -30,6 +30,7 @@ Wrapped ETH is included as a standalone contract to simulate how protocols like 
 - Some functions could be optimized further for gas efficiency
 
 
+# FIND COMMANDS UNDER foundry.sh and run as "foundry.sh <command>"
 
 ## Foundry
 
